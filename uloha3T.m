@@ -17,7 +17,6 @@ funkcna_hodnota_populacie=zeros(1,velkost_populacie);
 for cnt=1:max_iteration
 
     Newpop=generate_my_pop(pocet_genov,velkost_populacie);
-
 for generacia=1:max_generacia
     
     %vyhodnetenie
@@ -61,13 +60,10 @@ for i=1:pocet_genov
     A(:,i+1)=B(:,final_poradie(i));
 end
 
-fprintf('\n\n%2d spustenie: vysledok optimalneho riesenia: %4.4f \n s poradim: ',cnt,fitness_funkcia(cnt,end));
-disp(najlepsia_skupina);
+
 
 end
 
-fprintf('\n\n\t\nglobalne [optimalne] riesenie je: %4.4f pri poradi: \n',final_fitnes);
-disp(final_poradie);
 
 
 figure(2)
