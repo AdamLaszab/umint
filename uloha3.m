@@ -3,7 +3,7 @@ Points = [0,0; 77,68; 12,75; 32,17; 51,64; 20,19; 72,87; 80,37; 35,82;
           100,100]';
 
 maxi = 10000;
-numGenes = size(Points, 2) - 2;
+numGenes = 18;
 najlepsiaCesta = zeros(1, numGenes);
 populationSize = 30;
 maxGenerations = 750;

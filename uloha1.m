@@ -1,5 +1,6 @@
-function answer = uloha1(x, d)
-    fun = @(x) 0.2*x.^4 + 0.2*x.^3 - 4*x.^2 + 10;
+    x=-1;
+    d=0.5;
+fun = @(x) 0.2*x.^4 + 0.2*x.^3 - 4*x.^2 + 10;
 
     x_values = linspace(-6, 6, 100);
     y_values = fun(x_values);
@@ -34,4 +35,3 @@ function answer = uloha1(x, d)
 
 
     hold off;
-end
