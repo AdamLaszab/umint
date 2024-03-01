@@ -10,12 +10,14 @@ maxGenerations = 750;
 maxIterations = 5;
 crossoverRate = 0.12;
 populationFitness = zeros(1, populationSize);
-
+numRows = 1;
+minValue = 2;
+maxValue = numGenes+1;
 for iteration = 1:maxIterations
     
-    NewPopulation = generateUniqueRandomMatrix();
+    NewPopulation = generateUniqueRandomMatrix(numRows,numGenes,minValue,maxValue);
     for i = 1:populationSize-1
-     NewPopulation = [NewPopulation;generateUniqueRandomMatrix()];
+     NewPopulation = [NewPopulation;generateUniqueRandomMatrix(numRows,numGenes,minValue,maxValue)];
     end
 
     for generation = 1:maxGenerations
@@ -59,26 +61,19 @@ for iteration = 1:maxIterations
 
 end
 
+figure(2);
+najlepsiaCesta = [1, najlepsiaCesta, numGenes+2];
+for z = 1:numGenes+1
+    x = Points(1, najlepsiaCesta(z:z+1));
+    y = Points(2, najlepsiaCesta(z:z+1));
 
-figure(2)
-konecneZnacenie = Points;
-for i = 1:numGenes   
-    konecneZnacenie(:, i + 1) = Points(:, najlepsiaCesta(i));
+    plot(x, y, "o-");
+    hold on;
 end
-
-plot(konecneZnacenie(1,:), konecneZnacenie(2,:), 'O-');
-
-function uniqueRandomMatrix = generateUniqueRandomMatrix()
-    numRows = 1;
-    numCols = 18;
-    minValue = 2;
-    maxValue = 19;
-
+function uniqueRandomMatrix = generateUniqueRandomMatrix(numRows, numCols, minValue, maxValue)
     allNumbers = minValue:maxValue;
     uniqueNumbers = datasample(allNumbers, numRows * numCols, 'Replace', false);
     uniqueRandomMatrix = reshape(uniqueNumbers, numRows, numCols);
 end
 
-function distance = calculateDistance(x1, y1, x2, y2)
-    distance = sqrt((x2 - x1)^2 + (y2 - y1)^2);
-end
+
