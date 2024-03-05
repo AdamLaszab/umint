@@ -6,9 +6,9 @@ maxi = 10000;
 numGenes = 18;
 najlepsiaCesta = zeros(1, numGenes);
 populationSize = 30;
-maxGenerations = 750;
+maxGenerations = 1000;
 maxIterations = 5;
-crossoverRate = 0.12;
+crossoverRate = 0.4;
 populationFitness = zeros(1, populationSize);
 numRows = 1;
 minValue = 2;
@@ -25,8 +25,8 @@ for iteration = 1:maxIterations
             matrix = zeros(populationSize, 1);
 
             for row = 1:populationSize
-                    x = [Points(1, 1), Points(1, NewPopulation(row, 1:17)), Points(1, NewPopulation(row, 18)), Points(1, 20)];
-                    y = [Points(2, 1), Points(2, NewPopulation(row, 1:17)), Points(2, NewPopulation(row, 18)), Points(2, 20)];
+                    x = [Points(1, 1), Points(1, NewPopulation(row, 1:18)),Points(1, 20)];
+                    y = [Points(2, 1), Points(2, NewPopulation(row, 1:18)),Points(2, 20)];
     
                     sum1 = sum(sqrt(diff(x).^2 + diff(y).^2));
     
@@ -41,8 +41,8 @@ for iteration = 1:maxIterations
         susSelection = selsus(NewPopulation, populationFitness, 7);
         bestSwap = invord(best,crossoverRate);
         tournamentSelection = seltourn(NewPopulation, populationFitness,populationSize-22);
-        randomSelection = invord(randomSelection, crossoverRate);
-        susSelection = invord(susSelection, crossoverRate);
+        randomSelection = swappart(randomSelection, crossoverRate);
+        susSelection = swappart(susSelection, crossoverRate);
         tournamentSelection = swappart(tournamentSelection, crossoverRate);
         tournamentSelection = swapgen(tournamentSelection, crossoverRate);
         NewPopulation = [best;bestSwap;randomSelection; tournamentSelection; susSelection];
