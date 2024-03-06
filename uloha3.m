@@ -9,7 +9,6 @@ populationSize = 30;
 maxGenerations = 1000;
 maxIterations = 5;
 crossoverRate = 0.3;
-populationFitness = zeros(1, populationSize);
 minValue = 2;
 maxValue = numGenes+1;
 for iteration = 1:maxIterations
@@ -20,8 +19,7 @@ for iteration = 1:maxIterations
     end
 
     for generation = 1:maxGenerations
-            populationSize = size(NewPopulation, 1);
-            matrix = zeros(populationSize, 1);
+            populationFitness = zeros(populationSize, 1);
 
             for row = 1:populationSize
                     x = [Points(1, 1), Points(1, NewPopulation(row, 1:18)),Points(1, 20)];
@@ -29,12 +27,11 @@ for iteration = 1:maxIterations
     
                     sum1 = sum(sqrt(diff(x).^2 + diff(y).^2));
     
-                    matrix(row,:) = sum1;
+                    populationFitness(row,:) = sum1;
             end
-        populationFitness(:) = matrix;
+
         graph(iteration,generation) = min(populationFitness);
         najlepsi=selbest(NewPopulation,populationFitness,[1]);
-        
         best = selbest(NewPopulation, populationFitness, [1 1 1 1]);
         randomSelection = selrand(NewPopulation, populationFitness, 7);
         susSelection = selsus(NewPopulation, populationFitness, 7);
@@ -42,6 +39,7 @@ for iteration = 1:maxIterations
         tournamentSelection = seltourn(NewPopulation, populationFitness,populationSize-22);
         randomSelection = swappart(randomSelection, crossoverRate);
         susSelection = swappart(susSelection, crossoverRate);
+        susSelection = invord(susSelection,crossoverRate);
         tournamentSelection = swappart(tournamentSelection, crossoverRate);
         tournamentSelection = swapgen(tournamentSelection, crossoverRate);
         NewPopulation = [best;bestSwap;randomSelection; tournamentSelection; susSelection];
