@@ -8,16 +8,15 @@ najlepsiaCesta = zeros(1, numGenes);
 populationSize = 30;
 maxGenerations = 1000;
 maxIterations = 5;
-crossoverRate = 0.4;
+crossoverRate = 0.3;
 populationFitness = zeros(1, populationSize);
-numRows = 1;
 minValue = 2;
 maxValue = numGenes+1;
 for iteration = 1:maxIterations
     
-    NewPopulation = generateUniqueRandomMatrix(numRows,numGenes,minValue,maxValue);
+    NewPopulation = permutacie(numGenes,minValue,maxValue);
     for i = 1:populationSize-1
-     NewPopulation = [NewPopulation;generateUniqueRandomMatrix(numRows,numGenes,minValue,maxValue)];
+     NewPopulation = [NewPopulation;permutacie(numGenes,minValue,maxValue)];
     end
 
     for generation = 1:maxGenerations
@@ -70,10 +69,10 @@ for z = 1:numGenes+1
     plot(x, y, "o-");
     hold on;
 end
-function uniqueRandomMatrix = generateUniqueRandomMatrix(numRows, numCols, minValue, maxValue)
+function uniqueRandomMatrix = permutacie(numCols, minValue, maxValue)
     allNumbers = minValue:maxValue;
-    uniqueNumbers = datasample(allNumbers, numRows * numCols, 'Replace', false);
-    uniqueRandomMatrix = reshape(uniqueNumbers, numRows, numCols);
+    uniqueNumbers = datasample(allNumbers,numCols, 'Replace', false);
+    uniqueRandomMatrix = reshape(uniqueNumbers,1, numCols);
 end
 
 
