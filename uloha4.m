@@ -9,16 +9,16 @@ alfa=0.9;
 rate=0.8;
 Amp=100.0*ones(1,pocet_genov);
 Pop = zeros(populacia,5);
-for cnt=1:max_iteration
+for iteration=1:max_iteration
     while i:1:populacia
     Pop(i,:)= genpop(10000000);
     end
 for gen=1:numgen
     ucelova_f=Fit(Pop,max_money,populacia);
-    fitness_graf(cnt,gen)= -1*min(ucelova_f);
+    fitness_graf(iteration,gen)= -1*min(ucelova_f);
     
-    best=selbest(Pop,ucelova_f,[2 2]);
-    best2=selbest(Pop,ucelova_f,[2 2 2 2 2]);
+    best=selbest(Pop,ucelova_f,[1 1 1 1]);
+    best2=selbest(Pop,ucelova_f,[0 0 0 0 1 1 1 1 1 1 1 1 1 1]);
     sel_0=selrand(Pop,ucelova_f,10);
     sel_1=selsus(Pop,ucelova_f,8);
     
@@ -38,16 +38,16 @@ end %gen
     if final_fitnes < fitness_graf(end);
         final_fitnes = fitness_graf(end);
     end
-najlepsia_skupina(cnt,:)=selbest(Pop,ucelova_f,1);
-najlepsia_hodnota(cnt)=fitness_graf(end);
-fprintf('\n\n%2d spustenie: vysledok optimalneho riesenia: %4.4f \ns hodnotami: ',cnt,fitness_graf(end));
-disp(najlepsia_skupina(cnt,:));
+najlepsia_skupina(iteration,:)=selbest(Pop,ucelova_f,1);
+najlepsia_hodnota(iteration)=fitness_graf(end);
+fprintf('\n\n%2d spustenie: vysledok optimalneho riesenia: %4.4f \ns hodnotami: ',iteration,fitness_graf(end));
+disp(najlepsia_skupina(iteration,:));
 
-if cnt==1
+if iteration==1
     hold on
 end
 
-plot(fitness_graf(cnt,:));
+plot(fitness_graf(iteration,:));
 end
 final_najlepsia_skupina=selbest(Pop,ucelova_f,1);
 fprintf('\n\n\t\nglobalne [optimalne] riesenie je: %4.4f pri poradi: \n',final_fitnes);

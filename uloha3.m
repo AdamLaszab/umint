@@ -7,23 +7,23 @@ numGenes = 18;
 najlepsiaCesta = zeros(1, numGenes);
 populationSize = 30;
 maxGenerations = 1000;
-maxIterations = 5;
-crossoverRate = 0.3;
+maxIterations = 10;
+crossoverRate = 0.4;
 minValue = 2;
 maxValue = numGenes+1;
 for iteration = 1:maxIterations
     
-    NewPopulation = permutacie(numGenes,minValue,maxValue);
+    populacia = permutacie(numGenes,minValue,maxValue);
     for i = 1:populationSize-1
-     NewPopulation = [NewPopulation;permutacie(numGenes,minValue,maxValue)];
+     populacia = [populacia;permutacie(numGenes,minValue,maxValue)];
     end
 
     for generation = 1:maxGenerations
             populationFitness = zeros(populationSize, 1);
 
             for row = 1:populationSize
-                    x = [Points(1, 1), Points(1, NewPopulation(row, 1:18)),Points(1, 20)];
-                    y = [Points(2, 1), Points(2, NewPopulation(row, 1:18)),Points(2, 20)];
+                    x = [Points(1, 1), Points(1, populacia(row, 1:18)),Points(1, 20)];
+                    y = [Points(2, 1), Points(2, populacia(row, 1:18)),Points(2, 20)];
     
                     sum1 = sum(sqrt(diff(x).^2 + diff(y).^2));
     
@@ -31,21 +31,20 @@ for iteration = 1:maxIterations
             end
 
         graph(iteration,generation) = min(populationFitness);
-        najlepsi=selbest(NewPopulation,populationFitness,[1]);
-        best = selbest(NewPopulation, populationFitness, [1 1 1 1]);
-        randomSelection = selrand(NewPopulation, populationFitness, 7);
-        susSelection = selsus(NewPopulation, populationFitness, 7);
+        najlepsi=selbest(populacia,populationFitness,[1]);
+        best = selbest(populacia, populationFitness, [1 1 1 1 1 1 1 1]);
+        nahodny = selrand(populacia, populationFitness, 6);
         bestSwap = invord(best,crossoverRate);
-        tournamentSelection = seltourn(NewPopulation, populationFitness,populationSize-22);
-        randomSelection = swappart(randomSelection, crossoverRate);
-        susSelection = swappart(susSelection, crossoverRate);
-        susSelection = invord(susSelection,crossoverRate);
-        tournamentSelection = swappart(tournamentSelection, crossoverRate);
-        tournamentSelection = swapgen(tournamentSelection, crossoverRate);
-        NewPopulation = [best;bestSwap;randomSelection; tournamentSelection; susSelection];
+        turnajovy = seltourn(populacia, populationFitness,populationSize-4-4-7-7);
+        nahodny = invord(nahodny, crossoverRate);
+        nahodny = swapgen(nahodny,crossoverRate);
+        turnajovy = invord(turnajovy, crossoverRate);
+        turnajovy = swapgen(turnajovy,crossoverRate);
+        populacia = [best;bestSwap;nahodny; turnajovy];
 
     end
     
+    graph(iteration,end)
     if maxi > graph(iteration, end)
         maxi = graph(iteration, end);
         najlepsiaCesta = najlepsi;
@@ -67,10 +66,10 @@ for z = 1:numGenes+1
     plot(x, y, "o-");
     hold on;
 end
-function uniqueRandomMatrix = permutacie(numCols, minValue, maxValue)
-    allNumbers = minValue:maxValue;
-    uniqueNumbers = datasample(allNumbers,numCols, 'Replace', false);
-    uniqueRandomMatrix = reshape(uniqueNumbers,1, numCols);
+function odpoved = permutacie(numCols, minValue, maxValue)
+    rozsah = minValue:maxValue;
+    cisla = datasample(rozsah,numCols, 'Replace', false);
+    odpoved = reshape(cisla,1, numCols);
 end
 
 
