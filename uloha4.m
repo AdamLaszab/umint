@@ -15,7 +15,7 @@ for iteration=1:max_iteration
     end
 for gen=1:numgen
     ucelova_f=Fit(Pop,max_money,populacia);
-    fitness_graf(iteration,gen)= -1*min(ucelova_f);
+    fitness_graf(iteration,gen)= min(ucelova_f);
     
     best=selbest(Pop,ucelova_f,[1 1 1 1]);
     best2=selbest(Pop,ucelova_f,[0 0 0 0 1 1 1 1 1 1 1 1 1 1]);
@@ -47,7 +47,7 @@ if iteration==1
     hold on
 end
 
-plot(fitness_graf(iteration,:));
+plot(-fitness_graf(iteration,:));
 end
 final_najlepsia_skupina=selbest(Pop,ucelova_f,1);
 fprintf('\n\n\t\nglobalne [optimalne] riesenie je: %4.4f pri poradi: \n',final_fitnes);
