@@ -8,7 +8,7 @@ najlepsiaCesta = zeros(1, numGenes);
 populationSize = 30;
 maxGenerations = 1000;
 maxIterations = 10;
-crossoverRate = 0.2;
+crossoverRate = 0.4;
 minValue = 2;
 maxValue = numGenes+1;
 for iteration = 1:maxIterations
@@ -32,15 +32,15 @@ for iteration = 1:maxIterations
 
         graph(iteration,generation) = min(populationFitness);
         najlepsi=selbest(populacia,populationFitness,[1]);
-        best = selbest(populacia, populationFitness, [1 1 1 1 1 1 1 1]);
-        nahodny = selrand(populacia, populationFitness, 6);
+        best = selbest(populacia, populationFitness, [1 1 1 1 1 1 1]);
+        nahodny = selrand(populacia, populationFitness, 5);
         bestSwap = invord(best,crossoverRate);
         bestSwap = swappart(bestSwap,crossoverRate);
-        turnajovy = seltourn(populacia, populationFitness,populationSize-4-4-7-7);
+        turnajovy = seltourn(populacia, populationFitness,populationSize-size(best,1)-size(nahodny,1)-size(bestSwap,1));
         nahodny = invord(nahodny, crossoverRate);
-        nahodny = swapgen(nahodny,crossoverRate);
+        nahodny = swappart(nahodny,crossoverRate);
+        turnajovy = swappart(turnajovy,crossoverRate);
         turnajovy = invord(turnajovy, crossoverRate);
-        turnajovy = swapgen(turnajovy,crossoverRate);
         populacia = [best;bestSwap;nahodny; turnajovy];
 
     end

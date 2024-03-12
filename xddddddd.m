@@ -1,13 +1,13 @@
-final_fitnes=0;
+maxi=10000;
 best_iteration=0;
 max_money = 10000000;
 max_iteration=25;
 pocet_genov=5;
-populacia=60;
+populacia=70;
 numgen=2000;
 matica=[ 0, 0, 0, 0, 0; max_money, max_money, max_money, max_money, max_money];
 alfa=0.9;
-rate=0.4;
+rate=0.5;
 Amp=100.0*ones(1,pocet_genov);
 Pop = zeros(populacia,5);
 for iteration=1:max_iteration
@@ -26,32 +26,32 @@ for gen=1:numgen
     
     
     nahodny=around(nahodny,0,alfa,matica);
-    koleso=crossov(koleso,2,0);
+    nahodny=muta(nahodny,rate,Amp,matica);
+    koleso=crossov(koleso,4,0);
     koleso=mutx(koleso,rate,matica);
     koleso=around(koleso,0,alfa,matica);
-    turnajovy=crossov(turnajovy,2,0);
+    turnajovy=crossov(turnajovy,4,0);
+    turnajovy=mutx(turnajovy,rate,matica);
     nevybrany=around(nevybrany,0,alfa,matica);
     nevybrany=muta(nevybrany,rate,Amp,matica);
     
     Pop=[vyber;nevybrany;nahodny;koleso;turnajovy];
-end %gen
-
-    if final_fitnes >= fitness_graf(end);
-        final_fitnes = fitness_graf(end);
+end 
+    
+    if maxi > fitness_graf(iteration,end);
+        maxi = fitness_graf(iteration,end);
+        best_iteration = iteration;
     end
-najlepsia_skupina(iteration,:)=selbest(Pop,ucelova_f,1);
-fprintf('\n\n%2d spustenie: vysledok optimalneho riesenia: %4.4f \ns hodnotami: ',iteration,fitness_graf(end));
-disp(najlepsia_skupina(iteration,:));
+najlepsi(iteration,:)=selbest(Pop,ucelova_f,1);
 
 hold on;
 
 plot(-fitness_graf(iteration,:));
 end
-final_najlepsia_skupina=selbest(Pop,ucelova_f,1);
-fprintf('\n\n\t\nglobalne [optimalne] riesenie je: %4.4f pri poradi: \n',final_fitnes);
-disp(final_najlepsia_skupina);
 
-
+najlepsi=najlepsi(end,:)
+best_iteration
+-maxi
 
 
 function Fitness_f = Fit(Pop, maxMoney, populacia)
@@ -75,10 +75,9 @@ function Fitness_f = Fit(Pop, maxMoney, populacia)
             continue;
         end
 
-        budgetInFonds = Pop(index, 1) + Pop(index, 2);
 
-        if budgetInFonds > maxMoney / 4
-            profit = profit - (budgetInFonds - maxMoney / 4)*3;
+        if  Pop(index, 1) + Pop(index, 2) > maxMoney / 4
+            profit = profit - ((Pop(index, 1) + Pop(index, 2)) - maxMoney / 4);
         end
 
         if Pop(index, 4) < Pop(index, 5)
@@ -86,7 +85,7 @@ function Fitness_f = Fit(Pop, maxMoney, populacia)
         end
 
 
-        Fitness_f(index) = -1 * (profit);
+        Fitness_f(index) = -profit;
     end
 end
 
