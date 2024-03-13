@@ -1,7 +1,7 @@
 maxi=10000;
 best_iteration=0;
 peniaze = 10000000;
-maxIteration=30;
+maxIteration=10;
 pocGen=5;
 populacia=80;
 numgen=2000;
