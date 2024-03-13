@@ -1,13 +1,13 @@
 maxi=10000;
 best_iteration=0;
 peniaze = 10000000;
-maxIteration=30;
+maxIteration=10;
 pocGen=5;
 populacia=80;
 numgen=2000;
 matica=[ 0, 0, 0, 0, 0; peniaze, peniaze, peniaze, peniaze, peniaze];
 alfa=0.9;
-rate=0.65;
+rate=0.6;
 Amp=100.0*ones(1,pocGen);
 for iteration=1:maxIteration
     Pop = zeros(populacia,5);
@@ -17,13 +17,13 @@ for iteration=1:maxIteration
 for gen=1:numgen
     fitness=Fit(Pop,peniaze,populacia);
     graf(iteration,gen)= min(fitness);
-    vyber=selbest(Pop,fitness,[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]);
-    nahodny=selrand(Pop,fitness,10);
-    turnajovy=seltourn(Pop,fitness,20);
+    vyber=selbest(Pop,fitness,[1 1 1 1 1 1 1 1 1 1 1 1]);
+    nahodny=selrand(Pop,fitness,5);
+    turnajovy=seltourn(Pop,fitness,15);
     koleso=selsus(Pop,fitness,populacia-size(vyber,1)-size(nahodny,1)-size(turnajovy,1));
     
-    nahodny=around(nahodny,0,alfa,matica);
-    turnajovy=around(turnajovy,0,alfa,matica);
+    nahodny=around(nahodny,1,alfa,matica);
+    turnajovy=around(turnajovy,1,alfa,matica);
     nahodny=crossov(nahodny,3,0);
     turnajovy=crossov(turnajovy,3,0);
     nahodny=muta(nahodny,rate,Amp,matica);
@@ -32,8 +32,6 @@ for gen=1:numgen
     koleso=crossov(koleso,3,0);
     turnajovy=muta(turnajovy,rate,Amp,matica);
     vyber = muta(vyber,rate,Amp,matica);
-    vyber= around(vyber,0,alfa,matica);
-    vyber = crossov(vyber,3,0);
     Pop=[vyber;nahodny;koleso;turnajovy];
 end 
     
@@ -41,13 +39,14 @@ end
         maxi = graf(iteration,end);
         best_iteration = iteration;
     end
-najlepsi(iteration,:)=top;
+najlepsi(iteration,:)=selbest(Pop,fitness,[1]);
 
 hold on;
 
 plot(-graf(iteration,:));
 end
 
+najlepsi
 najlepsi=najlepsi(best_iteration,:)
 best_iteration
 -maxi
@@ -62,15 +61,15 @@ function fitness = Fit(Pop, maxMoney, populacia)
         budget = Pop(index, 1) + Pop(index, 2) + Pop(index, 3) + Pop(index, 4) + Pop(index, 5);
 
         if budget > maxMoney
-            profit = 0;
-            fitness(index) = 0;
+            profit = -1000000;
+            fitness(index) = -profit;
             continue;
         end
         p4 = -0.5 * Pop(index, 1) - 0.5 * Pop(index, 2) + 0.5 * Pop(index, 3) + 0.5 * Pop(index, 4) - 0.5 * Pop(index, 5);
 
         if p4 > 0
-            profit = 0;
-            fitness(index) = 0;
+            profit = -1000000;
+            fitness(index) = ;
             continue;
         end
 
