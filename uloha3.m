@@ -1,3 +1,4 @@
+clear
 Points = [0,0; 77,68; 12,75; 32,17; 51,64; 20,19; 72,87; 80,37; 35,82;
           2,15; 18,90; 33,50; 85,52; 97,27; 37,67; 20,82; 49,0; 62,14; 7,60;
           100,100]';
@@ -5,10 +6,10 @@ Points = [0,0; 77,68; 12,75; 32,17; 51,64; 20,19; 72,87; 80,37; 35,82;
 maxi = 10000;
 numGenes = 18;
 najlepsiaCesta = zeros(1, numGenes);
-populationSize = 30;
+populationSize = 50;
 maxGenerations = 1000;
 maxIterations = 10;
-crossoverRate = 0.4;
+crossoverRate = 0.5;
 minValue = 2;
 maxValue = numGenes+1;
 for iteration = 1:maxIterations

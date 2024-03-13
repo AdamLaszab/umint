@@ -1,26 +1,38 @@
+clear
+maxi=10000;
 maxIterations = 5;
 maxGeneration = 1000;
-popCount = 25;
+pocGen = 25;
 matica=ones(2,10).*[-500;500];
+Amp=100.0*ones(1,pocGen);
 rate=0.4;
+bestIteration = 0;
 for i = 1:maxIterations
-    firstpop = genrpop(popCount,matica);
+    firstpop = genrpop(pocGen,matica);
     for gen = 1:maxGeneration
         fitness = testfn3(firstpop);
         graph(i,gen)= min(fitness);
+        top = selbest(firstpop,fitness,[1]);
         vyber = selbest(firstpop, fitness, [1 1]);
         nevybrany = selbest(firstpop, fitness, [0 0 1 1 1 1 1 1 1 1]);
         nahodny=selrand(firstpop,fitness,6);
         krizenyvybrany=crossov(vyber,2,0);
-        koleso=selsus(firstpop,fitness,popCount-size(vyber,1)-size(nevybrany,1)-size(nahodny,1)-size(krizenyvybrany,1));
+        koleso=selsus(firstpop,fitness,pocGen-size(vyber,1)-size(nevybrany,1)-size(nahodny,1)-size(krizenyvybrany,1));
         nahodny=mutx(koleso,rate,matica);
         nevybrany = crossov(nevybrany, 2, 0);
-        nevybrany = mutx(nevybrany,rate,matica);
+        nevybrany = muta(nevybrany,rate,Amp,matica);
         koleso = mutx(koleso,rate,matica);
         koniec = [vyber;nahodny;nevybrany;krizenyvybrany;koleso];
         firstpop = koniec;
     end
+    if maxi > graph(i,end)
+        maxi= graph(i, end);
+        bestIteration = i;
+    end
+    najlepsi(i,:)=top;
     hold on
     plot(graph(i,:));
 end
+bestIteration
+najlepsi=najlepsi(bestIteration,:)
 hold off;
