@@ -15,7 +15,7 @@ for iteration=1:maxIteration
     Pop(i,:) = genpop(peniaze);
     end
 for gen=1:numgen
-    fitness=FitIbaStupnovite(Pop,peniaze,populacia);
+    fitness=FitIbaUmiernene(Pop,peniaze,populacia);
     graf(iteration,gen)= min(fitness);
     top=selbest(Pop,fitness,[1]);
     vyber=selbest(Pop,fitness,[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]);
@@ -77,6 +77,7 @@ function fitness = FitKombinovane(Pop, maxMoney, populacia)
             profit = profit - (Pop(index, 5) - Pop(index, 4));
         end
         
+        %stupnova pokuta
         if  Pop(index, 1) + Pop(index, 2) > 2500000
              profit = profit - ((Pop(index, 1) + Pop(index, 2)) - 2500000);
         end
@@ -135,11 +136,11 @@ function fitness = FitIbaUmiernene(Pop, maxMoney, populacia)
         
         
         if budget > maxMoney
-            profit = profit-(budget-maxMoney);
+            profit = profit-(budget-maxMoney)*1000;
         end
 
         if -0.5 * Pop(index, 1) - 0.5 * Pop(index, 2) + 0.5 * Pop(index, 3) + 0.5 * Pop(index, 4) - 0.5 * Pop(index, 5) > 0
-            profit = profit -(-0.5 * Pop(index, 1) - 0.5 * Pop(index, 2) + 0.5 * Pop(index, 3) + 0.5 * Pop(index, 4) - 0.5 * Pop(index, 5));
+            profit = profit -(-0.5 * Pop(index, 1) - 0.5 * Pop(index, 2) + 0.5 * Pop(index, 3) + 0.5 * Pop(index, 4) - 0.5 * Pop(index, 5))*1000;
         end
 
        if Pop(index, 4) < Pop(index, 5)
@@ -147,7 +148,7 @@ function fitness = FitIbaUmiernene(Pop, maxMoney, populacia)
         end
 
         if  Pop(index, 1) + Pop(index, 2) > 2500000
-            profit = profit - ((Pop(index,2)+Pop(index,1))-2500000);
+            profit = profit - (Pop(index,2)-Pop(index,1));
         end
         
         
@@ -155,36 +156,7 @@ function fitness = FitIbaUmiernene(Pop, maxMoney, populacia)
         fitness(index) = -profit;
     end
 end
-function fitness = FitIbaStupnovite(Pop, maxMoney, populacia)
-    fitness = zeros(populacia, 1);
 
-    for index = 1:populacia
-        profit = 0;
-        profit = profit + Pop(index, 1) * 0.04 + Pop(index, 2) * 0.07 + Pop(index, 3) * 0.11 + Pop(index, 4) * 0.06 + Pop(index, 5) * 0.05;
-        budget = Pop(index, 1) + Pop(index, 2) + Pop(index, 3) + Pop(index, 4) + Pop(index, 5);
-        pocetObmedzeni=0;
-        
-        if budget > maxMoney
-           pocetObmedzeni=pocetObmedzeni+1;
-        end
-
-        if -0.5 * Pop(index, 1) - 0.5 * Pop(index, 2) + 0.5 * Pop(index, 3) + 0.5 * Pop(index, 4) - 0.5 * Pop(index, 5) > 0
-            pocetObmedzeni=pocetObmedzeni+1;
-        end
-
-       if Pop(index, 4) < Pop(index, 5)
-            pocetObmedzeni=pocetObmedzeni+1;
-        end
-
-        if  Pop(index, 1) + Pop(index, 2) > 2500000
-           pocetObmedzeni=pocetObmedzeni+1;
-        end
-        
-        
-
-        fitness(index) = -(profit-(10000000*pocetObmedzeni));
-    end
-end
 function [x1, x2, x3, x4, x5] = genpop(totalNumber)
         x1 = randi([0, totalNumber]);
         x2 = randi([0, totalNumber]);
