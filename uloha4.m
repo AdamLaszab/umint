@@ -15,7 +15,7 @@ for iteration=1:maxIteration
     Pop(i,:) = genpop(peniaze);
     end
 for gen=1:numgen
-    fitness=FitIbaStupnovite(Pop,peniaze,populacia);
+    fitness=FitIbaMrtve(Pop,peniaze,populacia);
     graf(iteration,gen)= min(fitness);
     top=selbest(Pop,fitness,[1]);
     vyber=selbest(Pop,fitness,[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]);
