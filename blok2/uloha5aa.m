@@ -20,8 +20,8 @@ zlabel('z')
 
 
 % vstupne a vystupne data na trenovanie neuronovej siete
- datainnet=[data1;data2;data3;data4;data5];
- datainnet=transpose(datainnet);
+ datainnet=[data1;data2;data3;data4;data5]
+ datainnet=transpose(datainnet)
  dataoutnet=[ones(1, 50), zeros(1, 50), zeros(1, 50), zeros(1, 50), zeros(1, 50);
      zeros(1, 50), ones(1, 50), zeros(1, 50), zeros(1, 50), zeros(1, 50);
      zeros(1, 50), zeros(1, 50), ones(1, 50), zeros(1, 50), zeros(1, 50);
@@ -39,11 +39,11 @@ zlabel('z')
  net.divideParam.testRatio=0.2;
 
  %nastavenie parametrov trenovania 
- net.trainParam.goal = 0.000001;       % ukoncovacia podmienka na chybu.
- net.trainParam.show = 20;           % frekvencia zobrazovania chyby
- net.trainParam.epochs = 700;        % maximalny pocet trenovacich epoch.
- net.trainParam.max_fail=12;
-
+net.trainParam.goal = 1e-7;       
+net.trainParam.min_grad = 1e-5;   
+net.trainParam.show = 20;         
+net.trainParam.epochs = 220;      
+net.trainParam.max_fail = 10;     
 % trenovanie NS
  net = train(net,datainnet,dataoutnet);
 
@@ -65,11 +65,7 @@ zlabel('z')
  plotconfusion(dataoutnet,outnetsim)
 
 % test
-X=[0.3 0.4 0.7 0.8 0.5;0.6 0.7 0.2 0.3 0.5; 0.1 0.2 0.3 0.4 0.8];
+X=[0.8 0.7 0.5 0.7 0.6;0.4 0.8 0.5 0.1 0.3; 0.5 0.3 0.8 0.2 0.5];
 
-% simulacia vystupu NS
 y = net(X);
-% priradenie vstupov do tried
-classes2 = vec2ind(y);
-fprintf('Vzorka piatich bodov ma nasledovne priradene skupiny: ');
-disp(classes2);
+disp(y);
